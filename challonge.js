@@ -74,7 +74,7 @@ function sendParticipantStatus(source, id) {
 }
 
 function sendUserStatus(source) {
-  getParticipants(function(error, data) {
+  getParticipants(function(err, data) {
     if (err) { console.log(err); return; }
     participantId = undefined;
     data.forEach(function(entry) {
@@ -127,5 +127,6 @@ exports.getHelp = function(isAdmin) {
   return "CHALLONGE\n" +
     "chllg set _____ - sets the tournament subdomain\n" +
     "chllg cfg - get config\n" +
+    "chllg ustat - get your status in the tournament\n" +
     "chllg info - get info about the tournament\n";
 }
