@@ -9,10 +9,6 @@ var client = challonge.createClient({
     apiKey: config.apiKey
 });
 
-exports.save = function() {
-  fs.writeFileSync('./config.json',  JSON.stringify(config));
-};
-
 //string repeater
 String.prototype.repeat = function( num )
 {
@@ -45,23 +41,7 @@ function sendTournamentInfo(target) {
   }});
 }
 
-function getParticipants(callback) {
-  client.participants.index({
-		id: config.currentTournament,
-		callback: callback
-	});
-}
-
-function sendMatchEnemy(source, enemyId) {
-  client.participants.show({
-    id: config.currentTournament,
-    participantId: enemyId,
-    callback:  function(err, data) {
-      if (err) { logger.log(err); return; }
-      friends.messageUser(source, 'Enemy Name: ' + data.participant.name + '\n');
-  }});
-}
-
+//send the user his next match
 function sendParticipantNextMatch(source, id) {
   client.matches.index({
     id: config.currentTournament,
@@ -76,11 +56,20 @@ function sendParticipantNextMatch(source, id) {
       match = data[0].match;
       var response = 'Next Match:\nMatch ID: ' + match.id + '\n' +
         'Identifier: ' + match.identifier + '\n';
-      friends.messageUser(source, response);
-      sendMatchEnemy(source, match.player1Id == id ? match.player2Id : match.player1Id);
+
+      client.participants.show({
+        id: config.currentTournament,
+        participantId: (match.player1Id == id ? match.player2Id : match.player1Id),
+        callback:  function(err, data) {
+          if (err) { logger.log(err); return; }
+          response += 'Enemy Name: ' + data.participant.name + '\n';
+          friends.messageUser(source, response);
+      }});
+
   }});
 }
 
+//not really useful atm
 function sendUserStatus(source) {
   client.participants.index({
     id: config.currentTournament,
@@ -100,6 +89,7 @@ function sendUserStatus(source) {
   }});
 }
 
+//send match result to challonge
 function updateMatchResult(source, scoreU, scoreO) {
   client.participants.index({
     id: config.currentTournament,
@@ -172,6 +162,10 @@ exports.handle = function(input, source) {
     exports.save();
     return true;
   }
+};
+
+exports.save = function() {
+  fs.writeFileSync('./config.json',  JSON.stringify(config));
 };
 
 exports.onExit = function() {
