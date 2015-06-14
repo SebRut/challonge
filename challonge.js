@@ -69,7 +69,7 @@ function sendParticipantStatus(source, id) {
   getParticipantStatus(id, function(err, data) {
     if (err) { console.log(err); return; }
     var response = "INFO";
-    friends.sendMessage(source, response);
+    friends.messageUser(source, response);
   });
 }
 
@@ -83,7 +83,7 @@ function sendUserStatus(source) {
       }
     });
     if (participantId === undefined) {
-      friends.sendMessage(source, "You're currently no participant");
+      friends.messageUser(source, "You're currently no participant");
       return;
     }
     sendParticipantStatus(source, participantId);
