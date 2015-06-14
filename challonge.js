@@ -38,9 +38,9 @@ function sendTournamentInfo(target) {
     var tournament = data.tournament;
     var response = 'ID: ' + tournament.id + '\n' +
       'Name: ' + tournament.name + '\n' +
-      'Game: ' + tournament.game_name + '\n' +
+      'Game: ' + data.game_name + '\n' +
       'Participants: ' + tournament.participants_count + '\n' +
-      'URL: ' + tournament.full_challonge_url + '\n' +
+      'URL: ' + data.full_challonge_url + '\n' +
       'Description: ' + tournament.description + '\n';
     progress = tournament.progress_meter;
     if(progress === undefined) progress = 0;
