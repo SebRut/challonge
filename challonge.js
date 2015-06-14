@@ -2,6 +2,7 @@ var challonge = require('challonge');
 var friends = require("../../core/friends");
 var logger = require("../../core/logger");
 var fs = require('fs');
+var path = require('path');
 
 var config = require('./config.json');
 
