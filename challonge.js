@@ -1,8 +1,8 @@
-var challonge = require('./node-challonge');
+var challonge = require('challonge');
 var friends = require("../../core/friends");
 var fs = require('fs');
 
-var config = require('config.json');
+var config = require('./config.json');
 
 var client = challonge.createClient({
     apiKey: config.apiKey
