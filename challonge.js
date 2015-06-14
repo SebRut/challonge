@@ -35,11 +35,12 @@ function getTournament(callback) {
 function getTournamentInfo() {
   getTournament(function(err,data) {
     if (err) { console.log(err); return 'Error' }
-    tournament = data.tournament;
-    return 'ID: ' + tournament.id + '\n' +
+    var tournament = data.tournament;
+    var response = 'ID: ' + tournament.id + '\n' +
       'Name: ' + tournament.name + '\n' +
       'Participants: ' + tournament.participants_count + '\n' +
       'Progress: |' + '#'.repeat(tournament.progress_meter / 10) + '-'.repeat((100-tournament.progress_meter) / 10) + '|\n';
+    return response;
   });
 }
 
