@@ -99,6 +99,48 @@ function sendUserStatus(source) {
   }});
 }
 
+function updateMatchResult(source, scoreU, scoreO) {
+  client.participants.index({
+    id: config.currentTournament,
+    callback: function(err, data) {
+      if (err) { console.log(err); return; }
+      participantId = undefined;
+      data.forEach(function(entry) {
+        if(participantId === undefined && (entry.participant.name == friends.nameOf(source) ||entry.participant.challongeUsername == friends.nameOf(source))) {
+          participantId = entry.participant.id;
+        }
+      });
+      if (participantId === undefined) {
+        friends.messageUser(source, "You're currently no participant");
+        return;
+      }
+      client.matches.index({
+        id: config.currentTournament,
+        participantId: id,
+        state: 'open',
+        callback: function(err, data) {
+          if (err) { console.log(err); return; }
+          if(data.length == 0) {
+            friends.messageUser(source, 'You currently have no open match');
+            return;
+          }
+          match = data[0];
+            client.matches.update({
+              id: config.currentTournament,
+              matchId: match.id,
+              match: {
+                scoresCsv: match.player1Id == id ? scoreU : scoreO + '-' + match.player1Id == id ? scoreO : scoreU,
+                winnerId: scoreU > scoreO ? id : match.player1Id == id ? match.player2Id : match.player1Id
+              },
+              callback: function(err,data){
+                if (err) { console.log(err); return; }
+                console.log(data);
+            }
+            });
+      }});
+  }});
+}
+
 //Helper to check for permissions
 function hasPermission(source) {
   var admin = friends.get(source, 'chllg-admin') || friends.isAdmin(source);
@@ -123,6 +165,9 @@ exports.handle = function(input, source) {
     else if (input.length > 1 && input[1].toLowerCase() == 'ustat') {
       sendUserStatus(source);
     }
+    else if (input.length > 2 && input[1].toLowerCase() == 'rep') {
+      updateMatchResult(source, input[2], input[3]);
+    }
     exports.save();
     return true;
   }
@@ -137,5 +182,6 @@ exports.getHelp = function(isAdmin) {
     "chllg set _____ - sets the tournament subdomain\n" +
     "chllg cfg - get config\n" +
     "chllg ustat - get your status in the tournament\n" +
+    "chllg rep __ __ - set result for your current match, your score first\n" +
     "chllg info - get info about the tournament\n";
 }
