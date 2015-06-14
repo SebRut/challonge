@@ -50,6 +50,47 @@ function sendTournamentInfo(target) {
   });
 }
 
+function getParticipants(callback) {
+  client.participants.index({
+		id: config.currentTournament,
+		callback: callback
+	});
+}
+
+function getParticipantStatus(id, callback) {
+  client.participants.show({
+		id: config.currentTournament,
+		participantId: id,
+		callback: callback
+	});
+}
+
+function sendParticipantStatus(source, id) {
+  getParticipantStatus(id, function(err, data) {
+    if (err) { console.log(err); return; }
+    var response = "INFO";
+    friends.sendMessage(source, response);
+  });
+}
+
+function sendUserStatus(source) {
+  getParticipants(function(error, data) {
+    if (err) { console.log(err); return; }
+    participantId = undefined;
+    data.forEach(function(entry) {
+      if(entry.participant.name == friends.nameOf(source) ||entry.participant.challongeUsername == friends.nameOf(source)) {
+        participantId = entry.participant.id;
+        break;
+      }
+    });
+    if (participantId === undefined) {
+      friends.sendMessage(source, "You're currently no participant");
+      return;
+    }
+    getParticipantStatus(source, participantId);
+  });
+}
+
 //Helper to check for permissions
 function hasPermission(source) {
   var admin = friends.get(source, 'chllg-admin') || friends.isAdmin(source);
@@ -70,6 +111,9 @@ exports.handle = function(input, source) {
     }
     else if (input.length > 1 && input[1].toLowerCase() == 'info') {
       sendTournamentInfo(source);
+    }
+    else if (input.length > 1 && input[1].toLowerCase() == 'ustat') {
+      sendUserStatus(source);
     }
     exports.save();
     return true;
