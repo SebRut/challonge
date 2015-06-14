@@ -72,7 +72,7 @@ function sendParticipantNextMatch(source, id) {
         friends.messageUser(source, 'You currently have no open match');
         return;
       }
-      match = data[0];
+      match = data[0].match;
       var response = 'Next Match:\nMatch ID: ' + match.id + '\n' +
         'Identifier: ' + match.identifier + '\n';
       friends.messageUser(source, response);
