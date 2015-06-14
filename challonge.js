@@ -26,7 +26,7 @@ function setTournament(subdomain) {
 //get tournament info from challonge
 function getTournament(callback) {
   client.tournaments.show({
-    tournament : config.currentTournament,
+    id : config.currentTournament,
     callback: callback
   });
 }
