@@ -78,7 +78,7 @@ function sendUserStatus(source) {
     if (err) { console.log(err); return; }
     participantId = undefined;
     data.forEach(function(entry) {
-      if(participantId === undefined && (entry.participant.name == friends.nameOf(source) ||entry.participant.challongeUsername == friends.nameOf(source)) {
+      if(participantId === undefined && (entry.participant.name == friends.nameOf(source) ||entry.participant.challongeUsername == friends.nameOf(source))) {
         participantId = entry.participant.id;
       }
     });
