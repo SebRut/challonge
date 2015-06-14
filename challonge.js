@@ -23,31 +23,25 @@ function setTournament(subdomain) {
   config.currentTournament = subdomain;
 }
 
-//get tournament info from challonge
-function getTournament(callback) {
-  client.tournaments.show({
-    id : config.currentTournament,
-    callback: callback
-  });
-}
-
 //send informations about the tournament for output
 function sendTournamentInfo(target) {
-  getTournament(function(err,data) {
-    if (err) { console.log(err); return 'Error' }
-    var tournament = data.tournament;
-    var response = 'ID: ' + tournament.id + '\n' +
-      'Name: ' + tournament.name + '\n' +
-      'Game: ' + tournament.gameName + '\n' +
-      'Participants: ' + tournament.participantsCount + '\n' +
-      'URL: ' + tournament.fullChallongeUrl + '\n' +
-      'Description: ' + tournament.description + '\n';
-    progress = tournament.progressMeter;
-    if(progress === undefined) progress = 0;
-    progressPart = Math.floor(progress / 10);
-    response += 'Progress: |' + '#'.repeat(progressPart) + '-'.repeat(10 - progressPart) + '| - ' + progress + '%\n';
-    friends.messageUser(target,response);
-  });
+  client.tournaments.show({
+    id : config.currentTournament,
+    callback: function(err,data) {
+      if (err) { console.log(err); return 'Error' }
+      var tournament = data.tournament;
+      var response = 'ID: ' + tournament.id + '\n' +
+        'Name: ' + tournament.name + '\n' +
+        'Game: ' + tournament.gameName + '\n' +
+        'Participants: ' + tournament.participantsCount + '\n' +
+        'URL: ' + tournament.fullChallongeUrl + '\n' +
+        'Description: ' + tournament.description + '\n';
+      progress = tournament.progressMeter;
+      if(progress === undefined) progress = 0;
+      progressPart = Math.floor(progress / 10);
+      response += 'Progress: |' + '#'.repeat(progressPart) + '-'.repeat(10 - progressPart) + '| - ' + progress + '%\n';
+      friends.messageUser(target,response);
+  }});
 }
 
 function getParticipants(callback) {
@@ -57,37 +51,53 @@ function getParticipants(callback) {
 	});
 }
 
-function getParticipantStatus(id, callback) {
+function sendMatchEnemy(source, enemyId) {
   client.participants.show({
-		id: config.currentTournament,
-		participantId: id,
-		callback: callback
-	});
+    id: config.currentTournament,
+    participantId: enemyId,
+    callback:  function(err, data) {
+      if (err) { console.log(err); return; }
+      friends.messageUser(source, 'Enemy Name: ' + data.participant.name + '\n');
+  }});
 }
 
-function sendParticipantStatus(source, id) {
-  getParticipantStatus(id, function(err, data) {
-    if (err) { console.log(err); return; }
-    var response = "INFO";
-    friends.messageUser(source, response);
-  });
+function sendParticipantNextMatch(source, id) {
+  client.matchs.index({
+    id: config.currentTournament,
+    participantId: id,
+    state: 'open',
+    callback: function(err, data) {
+      if (err) { console.log(err); return; }
+      if(data.length == 0) {
+        friends.messageUser(source, 'You currently have no open match');
+        return;
+      }
+      match = data[0];
+      var response = 'Next Match:\nMatch ID: ' + match.id + '\n' +
+        'Identifier: ' + match.identifier + '\n';
+      friends.messageUser(source, response);
+      sendMatchEnemy(source, match.player1Id == id ? match.player2Id : match.player1Id);
+  }});
 }
 
 function sendUserStatus(source) {
-  getParticipants(function(err, data) {
-    if (err) { console.log(err); return; }
-    participantId = undefined;
-    data.forEach(function(entry) {
-      if(participantId === undefined && (entry.participant.name == friends.nameOf(source) ||entry.participant.challongeUsername == friends.nameOf(source))) {
-        participantId = entry.participant.id;
+  client.participants.show({
+    id: config.currentTournament,
+    participantId: id,
+    callback: function(err, data) {
+      if (err) { console.log(err); return; }
+      participantId = undefined;
+      data.forEach(function(entry) {
+        if(participantId === undefined && (entry.participant.name == friends.nameOf(source) ||entry.participant.challongeUsername == friends.nameOf(source))) {
+          participantId = entry.participant.id;
+        }
+      });
+      if (participantId === undefined) {
+        friends.messageUser(source, "You're currently no participant");
+        return;
       }
-    });
-    if (participantId === undefined) {
-      friends.messageUser(source, "You're currently no participant");
-      return;
-    }
-    sendParticipantStatus(source, participantId);
-  });
+      sendParticipantNextMatch(source, participantId);
+  }});
 }
 
 //Helper to check for permissions
