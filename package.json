@@ -1,0 +1,25 @@
+{
+  "name": "challonge",
+  "version": "0.0.0",
+  "description": "",
+  "main": "challonge.js",
+  "scripts": {
+    "test": "jshint challonge.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SebRut/challonge.git"
+  },
+  "author": "SebRut",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SebRut/challonge/issues"
+  },
+  "homepage": "https://github.com/SebRut/challonge",
+  "dependencies": {
+    "challonge": "git://github.com/Tidwell/node-challonge"
+  },
+  "devDependencies": {
+    "jshint": "^2.8.0"
+  }
+}
