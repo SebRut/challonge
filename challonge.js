@@ -124,7 +124,7 @@ function updateMatchResult(source, scoreU, scoreO) {
             friends.messageUser(source, 'You currently have no open match');
             return;
           }
-          match = data[0];
+          match = data[0].match;
             client.matches.update({
               id: config.currentTournament,
               matchId: match.id,
