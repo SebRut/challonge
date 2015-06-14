@@ -18,6 +18,7 @@ exports.save = function() {
 
 exports.setDictionary = function(file) {
   DICT = JSON.parse(fs.readFileSync(path.join('./dict', file)));
+  logger.log(DICT);
 }
 
 //string repeater
