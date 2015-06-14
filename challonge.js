@@ -24,25 +24,23 @@ function setTournament(subdomain) {
 }
 
 //get tournament info from challonge
-function getTournament() {
+function getTournament(callback) {
   client.tournaments.show({
     tournament : config.currentTournament,
-    callback: function(err, data) {
-      if (err) { console.log(err); return 'Error' }
-      return data;
-    }
+    callback: callback
   });
 }
 
 //get informations about the tournament for output
 function getTournamentInfo() {
-  tournament = getTournament();
-  if(tournament == "Error" || tournament === undefined) return 'An error occured.';
-  tournament = tournament.tournament;
-  return 'ID: ' + tournament.id + '\n' +
-    'Name: ' + tournament.name + '\n' +
-    'Participants: ' + tournament.participants_count + '\n' +
-    'Progress: |' + '#'.repeat(tournament.progress_meter / 10) + '-'.repeat((100-tournament.progress_meter) / 10) + '|\n';
+  getTournament(function(err,data) {
+    if (err) { console.log(err); return 'Error' }
+    tournament = data.tournament;
+    return 'ID: ' + tournament.id + '\n' +
+      'Name: ' + tournament.name + '\n' +
+      'Participants: ' + tournament.participants_count + '\n' +
+      'Progress: |' + '#'.repeat(tournament.progress_meter / 10) + '-'.repeat((100-tournament.progress_meter) / 10) + '|\n';
+  });
 }
 
 //Helper to check for permissions
