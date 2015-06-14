@@ -62,7 +62,7 @@ function sendMatchEnemy(source, enemyId) {
 }
 
 function sendParticipantNextMatch(source, id) {
-  client.matchs.index({
+  client.matches.index({
     id: config.currentTournament,
     participantId: id,
     state: 'open',
