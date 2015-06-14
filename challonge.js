@@ -31,8 +31,8 @@ function getTournament(callback) {
   });
 }
 
-//get informations about the tournament for output
-function getTournamentInfo() {
+//send informations about the tournament for output
+function sendTournamentInfo(target) {
   getTournament(function(err,data) {
     if (err) { console.log(err); return 'Error' }
     var tournament = data.tournament;
@@ -40,7 +40,7 @@ function getTournamentInfo() {
       'Name: ' + tournament.name + '\n' +
       'Participants: ' + tournament.participants_count + '\n' +
       'Progress: |' + '#'.repeat(tournament.progress_meter / 10) + '-'.repeat((100-tournament.progress_meter) / 10) + '|\n';
-    return response;
+    friends.messageUser(target,response);
   });
 }
 
@@ -63,7 +63,7 @@ exports.handle = function(input, source) {
       friends.messageUser(source, JSON.stringify(config));
     }
     else if (input.length > 1 && input[1].toLowerCase() == 'info') {
-      friends.messageUser(source, getTournamentInfo());
+      sendTournamentInfo(source);
     }
     exports.save();
     return true;
