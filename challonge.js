@@ -45,7 +45,7 @@ function sendTournamentInfo(target) {
     progress = tournament.progress_meter;
     if(progress === undefined) progress = 0;
     progressPart = Math.floor(progress / 10);
-    response += 'Progress: |' + '#'.repeat(progressPart) + '-'.repeat(Math.floor(10 - progressPart) + '|\n';
+    response += 'Progress: |' + '#'.repeat(progressPart) + '-'.repeat(10 - progressPart) + '|\n';
     friends.messageUser(target,response);
   });
 }
