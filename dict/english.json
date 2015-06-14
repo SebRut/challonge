@@ -1,9 +1,0 @@
-{
-  "TOURNAMENT": {
-    "tour_name" : "Name: ",
-    "tour_id" : "ID: "
-  },
-  "PLAYER" : {
-    "player_name" : "Name: "
-  }
-}

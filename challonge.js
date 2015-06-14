@@ -2,7 +2,6 @@ var challonge = require('challonge');
 var friends = require("../../core/friends");
 var logger = require("../../core/logger");
 var fs = require('fs');
-var path = require('path');
 
 var config = require('./config.json');
 
@@ -10,15 +9,8 @@ var client = challonge.createClient({
     apiKey: config.apiKey
 });
 
-var DICT = JSON.parse(fs.readFileSync('./dict/english.json'));
-
 exports.save = function() {
   fs.writeFileSync('./config.json',  JSON.stringify(config));
-}
-
-exports.setDictionary = function(file) {
-  DICT = JSON.parse(fs.readFileSync(path.join('./dict', file)));
-  logger.log(DICT);
 }
 
 //string repeater
@@ -39,8 +31,8 @@ function sendTournamentInfo(target) {
     callback: function(err,data) {
       if (err) { logger.log(err); return 'Error' }
       var tournament = data.tournament;
-      var response = DICT.TOURNAMENT.tour_id + tournament.id + '\n' +
-        DICT.TOURNAMENT.tour_name + tournament.name + '\n' +
+      var response = 'ID: ' + tournament.id + '\n' +
+        'Name: ' + tournament.name + '\n' +
         'Game: ' + tournament.gameName + '\n' +
         'Participants: ' + tournament.participantsCount + '\n' +
         'URL: ' + tournament.fullChallongeUrl + '\n' +
