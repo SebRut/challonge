@@ -86,7 +86,7 @@ function sendUserStatus(source) {
       friends.sendMessage(source, "You're currently no participant");
       return;
     }
-    getParticipantStatus(source, participantId);
+    sendParticipantStatus(source, participantId);
   });
 }
 
