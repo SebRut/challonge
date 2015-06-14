@@ -36,8 +36,9 @@ function getTournament() {
 
 //get informations about the tournament for output
 function getTournamentInfo() {
-  tournament = getTournament().tournament;
-  if(tournament == "Error") return 'An error occured.';
+  tournament = getTournament();
+  if(tournament == "Error" || tournament === undefined) return 'An error occured.';
+  tournament = tournament.tournament;
   return 'ID: ' + tournament.id + '\n' +
     'Name: ' + tournament.name + '\n' +
     'Participants: ' + tournament.participants_count + '\n' +
@@ -58,6 +59,9 @@ exports.handle = function(input, source) {
   if(input[0] == 'chllg') {
     if(input.length > 2 && input[1].toLowerCase() == 'set' && hasPermission(source)) {
       setTournament(input[2]);
+    }
+    if(input.length > 2 && input[1].toLowerCase() == 'cfg' && hasPermission(source)) {
+      friends.messageUser(source, JSON.stringify(config));
     }
     else if (input.length > 1 && input[1].toLowerCase() == 'info') {
       friends.messageUser(source, getTournamentInfo());
