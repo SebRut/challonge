@@ -125,12 +125,12 @@ function updateMatchResult(source, scoreU, scoreO) {
             return;
           }
           match = data[0].match;
-          console.log('score:' + match.player1Id == participantId ? scoreU : scoreO + '-' + match.player1Id == participantId ? scoreO : scoreU);
+          console.log('score:' + (match.player1Id == participantId ? scoreU : scoreO) + '-' + (match.player1Id == participantId ? scoreO : scoreU));
             client.matches.update({
               id: config.currentTournament,
               matchId: match.id,
               match: {
-                scoresCsv: match.player1Id == participantId ? scoreU : scoreO + '-' + match.player1Id == participantId ? scoreO : scoreU,
+                scoresCsv: match.player1Id == (participantId ? scoreU : scoreO) + '-' + (match.player1Id == participantId ? scoreO : scoreU),
                 winnerId: scoreU > scoreO ? participantId : match.player1Id == participantId ? match.player2Id : match.player1Id
               },
               callback: function(err,data){
