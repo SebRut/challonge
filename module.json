@@ -1,0 +1,7 @@
+{
+  "name": "Challonge",
+  "author": "SebRut",
+  "main": "challonge.js",
+  "license": "MIT",
+  "description": "Challonge data fetcher"
+}
