@@ -38,8 +38,8 @@ function sendTournamentInfo(target) {
     var tournament = data.tournament;
     var response = 'ID: ' + tournament.id + '\n' +
       'Name: ' + tournament.name + '\n' +
-      'Participants: ' + tournament.participants_count + '\n' +
-      'Progress: |' + '#'.repeat(Math.floor(tournament.progress_meter / 10)) + '-' + repeat(Math.floor((100-tournament.progress_meter) / 10)) + '|\n';
+      'Participants: ' + tournament.participants_count + '\n';
+    //'Progress: |' + '#'.repeat(Math.floor(tournament.progress_meter / 10)) + '-'.repeat(Math.floor((100-tournament.progress_meter) / 10)) + '|\n';
     friends.messageUser(target,response);
   });
 }
