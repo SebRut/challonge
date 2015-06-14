@@ -38,11 +38,11 @@ function sendTournamentInfo(target) {
     var tournament = data.tournament;
     var response = 'ID: ' + tournament.id + '\n' +
       'Name: ' + tournament.name + '\n' +
-      'Game: ' + data.game_name + '\n' +
-      'Participants: ' + tournament.participants_count + '\n' +
-      'URL: ' + data.full_challonge_url + '\n' +
+      'Game: ' + data.gameName + '\n' +
+      'Participants: ' + tournament.participantsCount + '\n' +
+      'URL: ' + data.fullChallongeUrl + '\n' +
       'Description: ' + tournament.description + '\n';
-    progress = tournament.progress_meter;
+    progress = tournament.progressMeter;
     if(progress === undefined) progress = 0;
     progressPart = Math.floor(progress / 10);
     response += 'Progress: |' + '#'.repeat(progressPart) + '-'.repeat(10 - progressPart) + '|\n';
