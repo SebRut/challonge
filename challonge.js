@@ -116,7 +116,7 @@ function updateMatchResult(source, scoreU, scoreO) {
       }
       client.matches.index({
         id: config.currentTournament,
-        participantId: id,
+        participantId: participantId,
         state: 'open',
         callback: function(err, data) {
           if (err) { console.log(err); return; }
