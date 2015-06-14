@@ -38,8 +38,14 @@ function sendTournamentInfo(target) {
     var tournament = data.tournament;
     var response = 'ID: ' + tournament.id + '\n' +
       'Name: ' + tournament.name + '\n' +
-      'Participants: ' + tournament.participants_count + '\n';
-    //'Progress: |' + '#'.repeat(Math.floor(tournament.progress_meter / 10)) + '-'.repeat(Math.floor((100-tournament.progress_meter) / 10)) + '|\n';
+      'Game: ' + tournament.game_name + '\n' +
+      'Participants: ' + tournament.participants_count + '\n' +
+      'URL: ' + tournament.full_challonge_url + '\n' +
+      'Description: ' + tournament.description + '\n';
+    progress = tournament.progress_meter;
+    if(progress === undefined) progress = 0;
+    progressPart = Math.floor(progress / 10);
+    response += 'Progress: |' + '#'.repeat(progressPart) + '-'.repeat(Math.floor(10 - progressPart) + '|\n';
     friends.messageUser(target,response);
   });
 }
