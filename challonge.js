@@ -129,8 +129,8 @@ function updateMatchResult(source, scoreU, scoreO) {
               id: config.currentTournament,
               matchId: match.id,
               match: {
-                scoresCsv: match.player1Id == id ? scoreU : scoreO + '-' + match.player1Id == id ? scoreO : scoreU,
-                winnerId: scoreU > scoreO ? id : match.player1Id == id ? match.player2Id : match.player1Id
+                scoresCsv: match.player1Id == participantId ? scoreU : scoreO + '-' + match.player1Id == participantId ? scoreO : scoreU,
+                winnerId: scoreU > scoreO ? participantId : match.player1Id == participantId ? match.player2Id : match.player1Id
               },
               callback: function(err,data){
                 if (err) { console.log(err); return; }
