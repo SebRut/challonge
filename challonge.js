@@ -60,7 +60,7 @@ exports.handle = function(input, source) {
     if(input.length > 2 && input[1].toLowerCase() == 'set' && hasPermission(source)) {
       setTournament(input[2]);
     }
-    if(input.length > 2 && input[1].toLowerCase() == 'cfg' && hasPermission(source)) {
+    if(input.length > 1 && input[1].toLowerCase() == 'cfg' && hasPermission(source)) {
       friends.messageUser(source, JSON.stringify(config));
     }
     else if (input.length > 1 && input[1].toLowerCase() == 'info') {
@@ -78,5 +78,6 @@ exports.onExit = function() {
 exports.getHelp = function(isAdmin) {
   return "CHALLONGE\n" +
     "chllg set _____ - sets the tournament subdomain\n" +
+    "chllg cfg - get config\n" +
     "chllg info - get info about the tournament\n";
 }
