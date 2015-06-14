@@ -1,6 +1,6 @@
 {
-  'TOURNAMENT' : {
-    'tour_name' : 'Name: ',
-    'tour_id' : 'ID: '
+  "TOURNAMENT" : {
+    "tour_name" : "Name: 2,
+    "tour_id" : "ID: "
   }
 }

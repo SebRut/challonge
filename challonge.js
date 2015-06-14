@@ -10,14 +10,14 @@ var client = challonge.createClient({
     apiKey: config.apiKey
 });
 
-var DICT;
+var DICT = JSON.parse(fs.readFileSync('./dict/english.json');
 
 exports.save = function() {
   fs.writeFileSync('./config.json',  JSON.stringify(config));
 }
 
 exports.setDictionary = function(file) {
-  DICT = JSON.parse(fs.readFileSync(path.join('dict', file)));
+  DICT = JSON.parse(fs.readFileSync(path.join('./dict', file)));
 }
 
 //string repeater
