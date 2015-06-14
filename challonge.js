@@ -52,7 +52,7 @@ function sendTournamentInfo(target) {
 
 //Helper to check for permissions
 function hasPermission(source) {
-  var admin = friends.get(source, 'chllg-admin');
+  var admin = friends.get(source, 'chllg-admin') || friends.isAdmin(source);
 
   if(admin) return true;
 
