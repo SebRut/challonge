@@ -11,13 +11,13 @@ var client = challonge.createClient({
 
 exports.save = function() {
   fs.writeFileSync('./config.json',  JSON.stringify(config));
-}
+};
 
 //string repeater
 String.prototype.repeat = function( num )
 {
     return new Array( num + 1 ).join( this );
-}
+};
 
 //Helper to set current tournament
 function setTournament(subdomain) {
@@ -29,7 +29,7 @@ function sendTournamentInfo(target) {
   client.tournaments.show({
     id : config.currentTournament,
     callback: function(err,data) {
-      if (err) { logger.log(err); return 'Error' }
+      if (err) { logger.log(err); return 'Error'; }
       var tournament = data.tournament;
       var response = 'ID: ' + tournament.id + '\n' +
         'Name: ' + tournament.name + '\n' +
@@ -69,7 +69,7 @@ function sendParticipantNextMatch(source, id) {
     state: 'open',
     callback: function(err, data) {
       if (err) { logger.log(err); return; }
-      if(data.length == 0) {
+      if(data.length === 0) {
         friends.messageUser(source, 'You currently have no open match');
         return;
       }
@@ -121,7 +121,7 @@ function updateMatchResult(source, scoreU, scoreO) {
         state: 'open',
         callback: function(err, data) {
           if (err) { logger.log(err); return; }
-          if(data.length == 0) {
+          if(data.length === 0) {
             friends.messageUser(source, 'You currently have no open match');
             return;
           }
@@ -172,11 +172,11 @@ exports.handle = function(input, source) {
     exports.save();
     return true;
   }
-}
+};
 
 exports.onExit = function() {
   exports.save();
-}
+};
 
 exports.getHelp = function(isAdmin) {
   return "CHALLONGE\n" +
@@ -185,4 +185,4 @@ exports.getHelp = function(isAdmin) {
     "chllg ustat - get your status in the tournament\n" +
     "chllg rep __ __ - set result for your current match, your score first\n" +
     "chllg info - get info about the tournament\n";
-}
+};
