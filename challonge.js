@@ -1,5 +1,6 @@
 var challonge = require('challonge');
 var friends = require("../../core/friends");
+var logger = require("../../core/logger");
 var fs = require('fs');
 
 var config = require('./config.json');
@@ -28,7 +29,7 @@ function sendTournamentInfo(target) {
   client.tournaments.show({
     id : config.currentTournament,
     callback: function(err,data) {
-      if (err) { console.log(err); return 'Error' }
+      if (err) { logger.log(err); return 'Error' }
       var tournament = data.tournament;
       var response = 'ID: ' + tournament.id + '\n' +
         'Name: ' + tournament.name + '\n' +
@@ -56,7 +57,7 @@ function sendMatchEnemy(source, enemyId) {
     id: config.currentTournament,
     participantId: enemyId,
     callback:  function(err, data) {
-      if (err) { console.log(err); return; }
+      if (err) { logger.log(err); return; }
       friends.messageUser(source, 'Enemy Name: ' + data.participant.name + '\n');
   }});
 }
@@ -67,7 +68,7 @@ function sendParticipantNextMatch(source, id) {
     participantId: id,
     state: 'open',
     callback: function(err, data) {
-      if (err) { console.log(err); return; }
+      if (err) { logger.log(err); return; }
       if(data.length == 0) {
         friends.messageUser(source, 'You currently have no open match');
         return;
@@ -84,7 +85,7 @@ function sendUserStatus(source) {
   client.participants.index({
     id: config.currentTournament,
     callback: function(err, data) {
-      if (err) { console.log(err); return; }
+      if (err) { logger.log(err); return; }
       participantId = undefined;
       data.forEach(function(entry) {
         if(participantId === undefined && (entry.participant.name == friends.nameOf(source) ||entry.participant.challongeUsername == friends.nameOf(source))) {
@@ -103,7 +104,7 @@ function updateMatchResult(source, scoreU, scoreO) {
   client.participants.index({
     id: config.currentTournament,
     callback: function(err, data) {
-      if (err) { console.log(err); return; }
+      if (err) { logger.log(err); return; }
       participantId = undefined;
       data.forEach(function(entry) {
         if(participantId === undefined && (entry.participant.name == friends.nameOf(source) ||entry.participant.challongeUsername == friends.nameOf(source))) {
@@ -119,7 +120,7 @@ function updateMatchResult(source, scoreU, scoreO) {
         participantId: participantId,
         state: 'open',
         callback: function(err, data) {
-          if (err) { console.log(err); return; }
+          if (err) { logger.log(err); return; }
           if(data.length == 0) {
             friends.messageUser(source, 'You currently have no open match');
             return;
@@ -133,8 +134,8 @@ function updateMatchResult(source, scoreU, scoreO) {
                 winnerId: scoreU > scoreO ? participantId : match.player1Id == participantId ? match.player2Id : match.player1Id
               },
               callback: function(err,data){
-                if (err) { console.log(err); return; }
-                console.log(data);
+                if (err) { logger.log(err); return; }
+                logger.log(data);
             }
             });
       }});
