@@ -1,0 +1,6 @@
+{
+  'TOURNAMENT' : {
+    'tour_name' : 'Name: ',
+    'tour_id' : 'ID: '
+  }
+}

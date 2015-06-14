@@ -9,8 +9,14 @@ var client = challonge.createClient({
     apiKey: config.apiKey
 });
 
+var DICT;
+
 exports.save = function() {
   fs.writeFileSync('./config.json',  JSON.stringify(config));
+}
+
+exports.setDictionary = function(file) {
+  DICT = JSON.parse(fs.readFileSync(path.join('dict', file)));
 }
 
 //string repeater
@@ -31,8 +37,8 @@ function sendTournamentInfo(target) {
     callback: function(err,data) {
       if (err) { logger.log(err); return 'Error' }
       var tournament = data.tournament;
-      var response = 'ID: ' + tournament.id + '\n' +
-        'Name: ' + tournament.name + '\n' +
+      var response = DICT.TOURNAMENT.tour_id + tournament.id + '\n' +
+        DICT.TOURNAMENT.tour_name + tournament.name + '\n' +
         'Game: ' + tournament.gameName + '\n' +
         'Participants: ' + tournament.participantsCount + '\n' +
         'URL: ' + tournament.fullChallongeUrl + '\n' +
