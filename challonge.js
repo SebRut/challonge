@@ -81,9 +81,8 @@ function sendParticipantNextMatch(source, id) {
 }
 
 function sendUserStatus(source) {
-  client.participants.show({
+  client.participants.index({
     id: config.currentTournament,
-    participantId: id,
     callback: function(err, data) {
       if (err) { console.log(err); return; }
       participantId = undefined;
