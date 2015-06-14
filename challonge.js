@@ -9,7 +9,13 @@ var client = challonge.createClient({
 });
 
 exports.save = function() {
-  fs.writeFileSync('config.json',  JSON.stringify(config));
+  fs.writeFileSync('./config.json',  JSON.stringify(config));
+}
+
+//string repeater
+String.prototype.repeat = function( num )
+{
+    return new Array( num + 1 ).join( this );
 }
 
 //Helper to set current tournament
@@ -22,7 +28,7 @@ function getTournament() {
   client.tournaments.show({
     tournament : config.currentTournament,
     callback: function(err, data) {
-      if (err) { console.log(err); return; }
+      if (err) { console.log(err); return 'Error' }
       return data;
     }
   });
@@ -30,8 +36,12 @@ function getTournament() {
 
 //get informations about the tournament for output
 function getTournamentInfo() {
-  tournament = getTournament();
-  return tournament;
+  tournament = getTournament().tournament;
+  if(tournament == "Error") return 'An error occured.';
+  return 'ID: ' + tournament.id + '\n' +
+    'Name: ' + tournament.name + '\n' +
+    'Participants: ' + tournament.participants_count + '\n' +
+    'Progress: |' + '#'.repeat(tournament.progress_meter / 10) + '-'.repeat((100-tournament.progress_meter) / 10) + '|\n';
 }
 
 //Helper to check for permissions
