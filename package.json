@@ -1,25 +1,28 @@
 {
-  "name": "challonge",
-  "version": "0.0.0",
-  "description": "",
+  "name": "jankbot-challonge",
+  "version": "1.0.0",
   "main": "challonge.js",
   "scripts": {
     "test": "jshint challonge.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/SebRut/challonge.git"
+    "url": "https://github.com/SebRut/jankbot-challonge"
   },
   "author": "SebRut",
-  "license": "ISC",
+  "license": "MIT Open Source License",
   "bugs": {
-    "url": "https://github.com/SebRut/challonge/issues"
+    "url": "https://github.com/SebRut/jankbot-challonge/issues"
   },
-  "homepage": "https://github.com/SebRut/challonge",
+  "homepage": "https://github.com/SebRut/jankbot-challonge",
   "dependencies": {
     "challonge": "git://github.com/Tidwell/node-challonge"
   },
   "devDependencies": {
     "jshint": "^2.8.0"
-  }
+  },
+  "keywords": [
+    "jankbot",
+    "challonge"
+  ]
 }

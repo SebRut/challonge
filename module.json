@@ -3,5 +3,6 @@
   "author": "SebRut",
   "main": "challonge.js",
   "license": "MIT",
-  "description": "Challonge data fetcher"
+  "description": "Challonge data fetcher",
+  "compatibility": "2.1.0"
 }
